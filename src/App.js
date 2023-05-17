@@ -3,8 +3,31 @@ import "./App.css";
 import { AiOutlineStar } from "react-icons/ai";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import React, { useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
 
 function App() {
+  const queryParams = new URLSearchParams(window.location.search);
+
+  const urlParams = {};
+  queryParams.forEach((value, key) => {
+    urlParams[key] = value;
+  });
+  // console.log("urlParams are:", urlParams);
+  const uuidValue = uuidv4();
+
+  useEffect(() => {
+    axios
+      .post("/api/endpoint", { ...urlParams, uuid: uuidValue })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   return (
     <div
       className="App"
